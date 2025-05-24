@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db-forum-hub
+    username: postgres
+    password: postgres

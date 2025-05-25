@@ -2,6 +2,10 @@ spring:
   application:
     name: app
 
+  mvc:
+    servlet:
+      path: /api/v1
+
   datasource:
     url: jdbc:postgresql://localhost:5432/db-forum-hub
     username: postgres

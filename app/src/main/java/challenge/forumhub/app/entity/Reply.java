@@ -43,4 +43,6 @@ public class Reply {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
+    @Column(nullable = false)
+    private Boolean active = true;
 }

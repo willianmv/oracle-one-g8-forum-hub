@@ -32,7 +32,7 @@ public class Category {
     private Set<Course> courses;
 
     @ManyToOne
-    private User cratedBy;
+    private User createdBy;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

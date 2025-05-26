@@ -38,7 +38,7 @@ public class Course {
     private Set<Category> categories;
 
     @ManyToOne
-    private User cratedBy;
+    private User createdBy;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

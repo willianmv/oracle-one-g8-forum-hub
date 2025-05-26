@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class CategoryService {
         Category category = new Category();
         category.setName(dto.name());
         User user = userRepository.getReferenceById(1L);
-        category.setCratedBy(user);
+        category.setCreatedBy(user);
         return categoryRepository.save(category);
     }
 
@@ -59,8 +60,12 @@ public class CategoryService {
 
     private void validateToUpdate(String name, long id){
         if(categoryRepository.existsByNameIgnoreCaseAndIdNot(name, id)){
-            throw new ResourceAlreadyExistsException("Uma categoria com outro ID já registrada com o nome: "+name);
+            throw new ResourceAlreadyExistsException("Existe uma categoria com outro ID já registrada com o nome: "+name);
         }
+    }
+
+    public Set<Category> findAllByIds(Set<Long> categoryIds) {
+        return categoryRepository.findAllByIdInAndActiveTrue(categoryIds);
     }
 }
 

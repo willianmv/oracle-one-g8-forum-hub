@@ -19,9 +19,9 @@ public class CategoryMapper {
                 .map(Course::getName)
                 .collect(Collectors.toSet());
 
-        String userCreator = categorySaved.getCratedBy() == null
+        String userCreator = categorySaved.getCreatedBy() == null
                 ? "Desconhecido"
-                : categorySaved.getCratedBy().getName();
+                : categorySaved.getCreatedBy().getName();
 
         return new CategoryDetailsDTO(
                 categorySaved.getId(), categorySaved.getName(),

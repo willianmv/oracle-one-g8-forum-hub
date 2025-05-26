@@ -1,6 +1,6 @@
 package challenge.forumhub.app.dto.topic;
 
-import challenge.forumhub.app.entity.Reply;
+import challenge.forumhub.app.dto.reply.ReplyTopicDTo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,5 +19,5 @@ public record TopicDetailsDTO(
         LocalDateTime modifiedAt,
         String title,
         String message,
-        List<Reply> replies
+        List<ReplyTopicDTo> replies
 ) {}

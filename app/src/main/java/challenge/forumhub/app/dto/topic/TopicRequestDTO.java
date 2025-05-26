@@ -8,7 +8,7 @@ public record TopicRequestDTO(
         @NotNull(message = "O campo ID do curso é obrigatório")
         Long courseId,
 
-        @NotBlank(message = "Campo nome é obrigatório")
+        @NotBlank(message = "Campo título é obrigatório")
         @Size(min = 3, max = 50, message = "O campo nome deve ter entre {min} e {max} caracteres")
         String title,
 

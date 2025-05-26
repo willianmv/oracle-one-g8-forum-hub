@@ -23,8 +23,8 @@ public class TopicService {
     private final UserRepository userRepository;
 
     public Topic create(TopicRequestDTO dto) {
-        validateDuplicateToCreateTopic(dto.title(), dto.message());
         Course course = validateCourse(dto.courseId());
+        validateDuplicateToCreateTopic(dto.title(), dto.message());
         Topic topic = new Topic();
         topic.setTitle(dto.title());
         topic.setMessage(dto.message());

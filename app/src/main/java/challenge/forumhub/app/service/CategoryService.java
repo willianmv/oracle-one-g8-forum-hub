@@ -1,0 +1,70 @@
+package challenge.forumhub.app.service;
+
+import challenge.forumhub.app.dto.category.CategoryRequestDTO;
+import challenge.forumhub.app.dto.category.CategoryUpdateDTO;
+import challenge.forumhub.app.entity.Category;
+import challenge.forumhub.app.entity.User;
+import challenge.forumhub.app.exception.BusinessException;
+import challenge.forumhub.app.exception.ErrorCode;
+import challenge.forumhub.app.repository.CategoryRepository;
+import challenge.forumhub.app.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CategoryService {
+
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+
+    public Category create(CategoryRequestDTO dto){
+        validateToCreate(dto.name());
+        Category category = new Category();
+        category.setName(dto.name());
+        User user = userRepository.getReferenceById(1L);
+        category.setCratedBy(user);
+        return categoryRepository.save(category);
+    }
+
+    public List<Category> getAll() {
+        return categoryRepository.findAllByActiveTrue();
+    }
+
+    public Category getCategoryById(long id) {
+        return categoryRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND, "Categoria não encontrada com ID: "+id));
+    }
+
+    public Category upadateCategory(long id, CategoryUpdateDTO dataToUpdate) {
+        Category categoryToUpdate = getCategoryById(id);
+        validateToUpdate(dataToUpdate.name(), id);
+        categoryToUpdate.setName(dataToUpdate.name());
+        return categoryRepository.save(categoryToUpdate);
+    }
+
+    public void deleteCategory(long id) {
+        Category category = getCategoryById(id);
+        category.setActive(false);
+        categoryRepository.save(category);
+    }
+
+    private void validateToCreate(String name){
+        if(categoryRepository.existsByNameIgnoreCase(name)){
+            throw new BusinessException(
+                    ErrorCode.RESOURCE_ALREADY_EXISTS, "Categoria já registrada com o nome: "+name);
+        }
+    }
+
+    private void validateToUpdate(String name, long id){
+        if(categoryRepository.existsByNameIgnoreCaseAndIdNot(name, id)){
+            throw new BusinessException(
+                    ErrorCode.RESOURCE_ALREADY_EXISTS, "Uma categoria com outro ID já registrada com o nome: "+name);
+        }
+    }
+}
+

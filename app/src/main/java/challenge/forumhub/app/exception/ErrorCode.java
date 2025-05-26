@@ -9,6 +9,7 @@ public enum ErrorCode {
     //Relacionado a regras de negócio
     RESOURCE_NOT_FOUND("RESOURCE_NOT_FOUND", HttpStatus.NOT_FOUND, "Recurso não encontrado"),
     RESOURCE_ALREADY_EXISTS("RESOURCE_ALREADY_EXISTS", HttpStatus.BAD_REQUEST, "Recurso já existe"),
+    RELATION_VALIDATION_ERROR("RELATION_VALIDATION_ERROR", HttpStatus.BAD_REQUEST, "Erro ao relacionar entidades"),
     RESOURCE_INACTIVE("RESOURCE_INACTIVE", HttpStatus.BAD_REQUEST, "Recurso está inativo"),
 
     //Relacionado a validação de campos

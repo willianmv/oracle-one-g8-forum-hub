@@ -1,7 +1,9 @@
 package challenge.forumhub.app.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ErrorCode {
 
     //Relacionado a regras de negócio
@@ -25,15 +27,4 @@ public enum ErrorCode {
         this.defaultMessage = defaultMessage;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public String getDefaultMessage() {
-        return defaultMessage;
-    }
 }

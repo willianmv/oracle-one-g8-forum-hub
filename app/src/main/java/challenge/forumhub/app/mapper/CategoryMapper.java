@@ -1,7 +1,6 @@
 package challenge.forumhub.app.mapper;
 
 import challenge.forumhub.app.dto.category.CategoryDetailsDTO;
-import challenge.forumhub.app.dto.category.CategoryRequestDTO;
 import challenge.forumhub.app.dto.category.CategorySummaryDTO;
 import challenge.forumhub.app.entity.Category;
 import challenge.forumhub.app.entity.Course;
@@ -34,7 +33,7 @@ public class CategoryMapper {
         int courseCount = category.getCourses() != null
                 ? category.getCourses().size()
                 : 0;
-        return  new CategorySummaryDTO(category.getId(), category.getName(), courseCount);
+        return new CategorySummaryDTO(category.getId(), category.getName(), courseCount);
     }
 
 }

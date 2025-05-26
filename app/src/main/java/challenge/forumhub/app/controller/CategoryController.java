@@ -11,7 +11,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -26,14 +29,24 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryDetailsDTO> create(@RequestBody @Valid CategoryRequestDTO dto){
         Category categorySaved = categoryService.create(dto);
-        return ResponseEntity.ok(categoryMapper.toDetailsDTO(categorySaved));
+        CategoryDetailsDTO responseDTO = categoryMapper.toDetailsDTO(categorySaved);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(categorySaved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(responseDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<CategorySummaryDTO>> getAllCategories(){
         List<CategorySummaryDTO> categories = categoryService.getAll()
                 .stream()
-                .map(categoryMapper::toSummaryDTO).toList();
+                .map(categoryMapper::toSummaryDTO)
+                .sorted(Comparator.comparing(CategorySummaryDTO::id))
+                .toList();
         return ResponseEntity.ok(categories);
     }
 

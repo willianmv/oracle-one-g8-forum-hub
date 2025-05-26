@@ -4,11 +4,10 @@ import challenge.forumhub.app.dto.category.CategoryRequestDTO;
 import challenge.forumhub.app.dto.category.CategoryUpdateDTO;
 import challenge.forumhub.app.entity.Category;
 import challenge.forumhub.app.entity.User;
-import challenge.forumhub.app.exception.BusinessException;
-import challenge.forumhub.app.exception.ErrorCode;
+import challenge.forumhub.app.exception.ResourceAlreadyExistsException;
+import challenge.forumhub.app.exception.ResourceNotFoundException;
 import challenge.forumhub.app.repository.CategoryRepository;
 import challenge.forumhub.app.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +35,7 @@ public class CategoryService {
 
     public Category getCategoryById(long id) {
         return categoryRepository.findByIdAndActiveTrue(id)
-                .orElseThrow(() -> new BusinessException(
-                        ErrorCode.RESOURCE_NOT_FOUND, "Categoria não encontrada com ID: "+id));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: "+id));
     }
 
     public Category upadateCategory(long id, CategoryUpdateDTO dataToUpdate) {
@@ -55,15 +53,13 @@ public class CategoryService {
 
     private void validateToCreate(String name){
         if(categoryRepository.existsByNameIgnoreCase(name)){
-            throw new BusinessException(
-                    ErrorCode.RESOURCE_ALREADY_EXISTS, "Categoria já registrada com o nome: "+name);
+            throw new ResourceAlreadyExistsException("Categoria já registrada com o nome: "+name);
         }
     }
 
     private void validateToUpdate(String name, long id){
         if(categoryRepository.existsByNameIgnoreCaseAndIdNot(name, id)){
-            throw new BusinessException(
-                    ErrorCode.RESOURCE_ALREADY_EXISTS, "Uma categoria com outro ID já registrada com o nome: "+name);
+            throw new ResourceAlreadyExistsException("Uma categoria com outro ID já registrada com o nome: "+name);
         }
     }
 }

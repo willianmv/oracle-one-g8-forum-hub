@@ -1,6 +1,7 @@
 package challenge.forumhub.app.service;
 
 import challenge.forumhub.app.entity.User;
+import challenge.forumhub.app.exception.ResourceNotFoundException;
 import challenge.forumhub.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class UserService {
     }
 
     public User getUserById(long id) {
-        return userRepository.findByIdAndActiveTrue(id);
+        return userRepository.findByIdAndActiveTrue(id).
+                orElseThrow(() -> new ResourceNotFoundException("User não encontrado com ID: "+id));
     }
 }

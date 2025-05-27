@@ -4,6 +4,7 @@ import challenge.forumhub.app.dto.reply.ReplyDetailsDTO;
 import challenge.forumhub.app.dto.reply.ReplyTopicDTo;
 import challenge.forumhub.app.dto.topic.TopicDetailsDTO;
 import challenge.forumhub.app.dto.topic.TopicSummaryDTO;
+import challenge.forumhub.app.entity.Reply;
 import challenge.forumhub.app.entity.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,9 @@ public class TopicMapper {
 
         List<ReplyTopicDTo> replies = topic.getReplies() == null
                 ? null
-                : topic.getReplies().stream().map(replyMapper::toReplyTopicDTO).toList();
+                : topic.getReplies().stream()
+                .filter(Reply::getActive)
+                .map(replyMapper::toReplyTopicDTO).toList();
 
         return new TopicDetailsDTO(
                 topic.getId(),
@@ -35,9 +38,7 @@ public class TopicMapper {
     }
 
     public TopicSummaryDTO toSummaryDTO(Topic topic){
-        int replyCount = topic.getReplies() == null
-                ? 0
-                : topic.getReplies().size();
+        int replyCount = topic.getReplies().size();
 
         return new TopicSummaryDTO(
                 topic.getId(),

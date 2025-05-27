@@ -1,5 +1,6 @@
 package challenge.forumhub.app.service;
 
+import challenge.forumhub.app.dto.topic.TopicFilterParams;
 import challenge.forumhub.app.dto.topic.TopicRequestDTO;
 import challenge.forumhub.app.dto.topic.TopicUpdateDTO;
 import challenge.forumhub.app.entity.Course;
@@ -43,6 +44,28 @@ public class TopicService {
 
     public List<Topic> getAll() {
         return topicRepository.findAllByActiveTrue();
+    }
+
+    public List<Topic> getTopicsByFilters(TopicFilterParams params){
+////        LocalDateTime createdAfter = params.createdAfter() != null
+////                ? params.createdAfter().atStartOfDay() : null;
+////
+////        LocalDateTime createdBefore = params.createdBefore() != null
+////                ? params.createdBefore().atTime(23, 59, 59)
+////                : null;
+//
+//        Optional<LocalDateTime> createdAfter = Optional.ofNullable(params.createdAfter())
+//                .map(date -> date.atStartOfDay());
+//
+//        Optional<LocalDateTime> createdBefore = Optional.ofNullable(params.createdBefore())
+//                .map(date -> date.atTime(23, 59, 59));
+
+
+        return topicRepository.findByFilters(
+                params.authorId(),
+                params.courseId(),
+                params.categoryId(),
+                params.status());
     }
 
     @Transactional

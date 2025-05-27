@@ -1,10 +1,8 @@
 package challenge.forumhub.app.controller;
 
-import challenge.forumhub.app.dto.topic.TopicDetailsDTO;
-import challenge.forumhub.app.dto.topic.TopicRequestDTO;
-import challenge.forumhub.app.dto.topic.TopicSummaryDTO;
-import challenge.forumhub.app.dto.topic.TopicUpdateDTO;
+import challenge.forumhub.app.dto.topic.*;
 import challenge.forumhub.app.entity.Topic;
+import challenge.forumhub.app.entity.TopicStatus;
 import challenge.forumhub.app.mapper.TopicMapper;
 import challenge.forumhub.app.service.TopicService;
 import jakarta.validation.Valid;
@@ -40,8 +38,15 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TopicSummaryDTO>> getAllTopics(){
-        List<TopicSummaryDTO> topics = topicService.getAll()
+    public ResponseEntity<List<TopicSummaryDTO>> getAllTopics(
+            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long courseId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) TopicStatus status)
+    {
+        TopicFilterParams params = new TopicFilterParams(authorId, courseId, categoryId, status);
+
+        List<TopicSummaryDTO> topics = topicService.getTopicsByFilters(params)
                 .stream()
                 .map(topicMapper::toSummaryDTO)
                 .sorted(Comparator.comparing(TopicSummaryDTO::id))

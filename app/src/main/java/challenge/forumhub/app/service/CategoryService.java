@@ -10,6 +10,7 @@ import challenge.forumhub.app.repository.CategoryRepository;
 import challenge.forumhub.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Category create(CategoryRequestDTO dto){
         validateToCreate(dto.name());
         Category category = new Category();
@@ -39,6 +41,7 @@ public class CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: "+id));
     }
 
+    @Transactional
     public Category upadateCategory(long id, CategoryUpdateDTO dataToUpdate) {
         Category categoryToUpdate = getCategoryById(id);
         validateToUpdate(dataToUpdate.name(), id);
@@ -46,6 +49,7 @@ public class CategoryService {
         return categoryRepository.save(categoryToUpdate);
     }
 
+    @Transactional
     public void deleteCategory(long id) {
         Category category = getCategoryById(id);
         category.setActive(false);

@@ -11,6 +11,7 @@ import challenge.forumhub.app.repository.CourseRepository;
 import challenge.forumhub.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ public class CourseService {
     private final CategoryService categoryService;
     private final UserRepository userRepository;
 
+    @Transactional
     public Course create(CourseRequestDTO dto) {
         validateCourseNameToCreate(dto);
         Set<Category> categories = validateCategories(dto.categoryIds());
@@ -44,6 +46,7 @@ public class CourseService {
                 .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado com ID: "+id));
     }
 
+    @Transactional
     public Course updateCourse(long id, CourseUpdateDTO dto) {
         Course courseToUpdate = getCourseById(id);
         validateCourseNameToUpdate(dto, id);
@@ -51,6 +54,13 @@ public class CourseService {
         courseToUpdate.setName(dto.name());
         courseToUpdate.setCategories(categories);
         return courseRepository.save(courseToUpdate);
+    }
+
+    @Transactional
+    public void deleteCourse(long id) {
+        Course course = getCourseById(id);
+        course.setActive(false);
+        courseRepository.save(course);
     }
 
     private void validateCourseNameToCreate(CourseRequestDTO dto){
@@ -76,11 +86,5 @@ public class CourseService {
             throw new RelationValidationException("Os seguintes IDs não foram encontrados: "+missingIds);
         }
         return categories;
-    }
-
-    public void deleteCourse(long id) {
-        Course course = getCourseById(id);
-        course.setActive(false);
-        courseRepository.save(course);
     }
 }

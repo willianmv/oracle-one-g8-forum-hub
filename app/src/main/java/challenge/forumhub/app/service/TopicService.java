@@ -11,6 +11,7 @@ import challenge.forumhub.app.repository.TopicRepository;
 import challenge.forumhub.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class TopicService {
     private final CourseService courseService;
     private final UserRepository userRepository;
 
+    @Transactional
     public Topic create(TopicRequestDTO dto) {
         Course course = validateCourse(dto.courseId());
         validateDuplicateToCreateTopic(dto.title(), dto.message());
@@ -43,6 +45,7 @@ public class TopicService {
         return topicRepository.findAllByActiveTrue();
     }
 
+    @Transactional
     public Topic updateTopic(long id, TopicUpdateDTO dto) {
         Topic topicToUpdate = getTopicById(id);
         validateDuplicateToUpdateTopic(dto.title(), dto.message(), id);
@@ -53,6 +56,7 @@ public class TopicService {
         return topicRepository.save(topicToUpdate);
     }
 
+    @Transactional
     public void deleteTopic(long id) {
         Topic topic = getTopicById(id);
         topic.setActive(false);

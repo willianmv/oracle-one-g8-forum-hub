@@ -21,14 +21,15 @@ public class ReplyMapper {
 
     public ReplySummaryDTO toSummaryDTO(Reply reply) {
         return new ReplySummaryDTO(
-                reply.getId(), reply.getTopic().getTitle(),
-                reply.getAuthor().getEmail(), reply.getTitle());
+                reply.getAuthor().getEmail(),
+                reply.getTopic().getId(), reply.getTopic().getTitle(),
+                reply.getId(), reply.getTitle());
     }
 
     public ReplyTopicDTo toReplyTopicDTO(Reply reply){
         return new ReplyTopicDTo(
-                reply.getId(), reply.getAuthor().getName(),
-                reply.getAuthor().getEmail(), reply.getCreatedAt(),
+                reply.getCreatedAt(),
+                reply.getAuthor().getEmail(),
                 reply.getTitle(), reply.getSolution());
     }
 }

@@ -1,6 +1,5 @@
 package challenge.forumhub.app.mapper;
 
-import challenge.forumhub.app.dto.reply.ReplyDetailsDTO;
 import challenge.forumhub.app.dto.reply.ReplyTopicDTo;
 import challenge.forumhub.app.dto.topic.TopicDetailsDTO;
 import challenge.forumhub.app.dto.topic.TopicSummaryDTO;
@@ -38,7 +37,9 @@ public class TopicMapper {
     }
 
     public TopicSummaryDTO toSummaryDTO(Topic topic){
-        int replyCount = topic.getReplies().size();
+        int replyCount = topic.getReplies() == null
+                ? 0
+                : (int) topic.getReplies().stream().filter(Reply::getActive).count();
 
         return new TopicSummaryDTO(
                 topic.getId(),

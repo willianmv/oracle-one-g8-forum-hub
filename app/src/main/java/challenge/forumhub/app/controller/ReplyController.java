@@ -44,7 +44,7 @@ public class ReplyController {
         List<ReplySummaryDTO> replies = replyService.getAll()
                 .stream()
                 .map(replyMapper::toSummaryDTO)
-                .sorted(Comparator.comparing(ReplySummaryDTO::id))
+                .sorted(Comparator.comparing(ReplySummaryDTO::replyId))
                 .toList();
         return ResponseEntity.ok(replies);
     }

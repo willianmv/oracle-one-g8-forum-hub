@@ -60,9 +60,26 @@ public class ReplyService {
         return replyRepository.save(replyToUpdate);
     }
 
+    @Transactional
+    public void deleteReply(long id) {
+        Reply reply = getReplyById(id);
+        reply.setActive(false);
+        replyRepository.save(reply);
+        verifyActiveRepliesInTopic(reply.getTopic());
+    }
+
     private void validateDuplicateToUpdateReply(String title,String solution, long id) {
         if(replyRepository.existsByTitleIgnoreCaseAndSolutionIgnoreCaseAndIdNot(title, solution, id))
             throw new ResourceAlreadyExistsException("Já existe um tópico com o mesmo título e mensagem");
+    }
+
+    private void validateDuplicateToCreateReply(String title, String solution) {
+        if(replyRepository.existsByTitleIgnoreCaseAndSolutionIgnoreCase(title, solution))
+            throw new ResourceAlreadyExistsException("Já existe um tópico com o mesmo título e mensagem");
+    }
+
+    private Topic validateTopic(long topicId) {
+        return topicService.getTopicById(topicId);
     }
 
     private void addReplyToTopic(Topic topic, Reply reply){
@@ -76,18 +93,11 @@ public class ReplyService {
         }
     }
 
-    private void validateDuplicateToCreateReply(String title, String solution) {
-        if(replyRepository.existsByTitleIgnoreCaseAndSolutionIgnoreCase(title, solution))
-            throw new ResourceAlreadyExistsException("Já existe um tópico com o mesmo título e mensagem");
-    }
-
-    private Topic validateTopic(long topicId) {
-        return topicService.getTopicById(topicId);
-    }
-
-    public void deleteReply(long id) {
-        Reply reply = getReplyById(id);
-        reply.setActive(false);
-        replyRepository.save(reply);
+    private void verifyActiveRepliesInTopic(Topic topic){
+        boolean hasActiveReplies = topic.getReplies().stream().anyMatch(Reply::getActive);
+        if(!hasActiveReplies){
+            topic.setStatus(TopicStatus.NO_REPLIES);
+            topicRepository.save(topic);
+        }
     }
 }

@@ -47,20 +47,6 @@ public class TopicService {
     }
 
     public List<Topic> getTopicsByFilters(TopicFilterParams params){
-////        LocalDateTime createdAfter = params.createdAfter() != null
-////                ? params.createdAfter().atStartOfDay() : null;
-////
-////        LocalDateTime createdBefore = params.createdBefore() != null
-////                ? params.createdBefore().atTime(23, 59, 59)
-////                : null;
-//
-//        Optional<LocalDateTime> createdAfter = Optional.ofNullable(params.createdAfter())
-//                .map(date -> date.atStartOfDay());
-//
-//        Optional<LocalDateTime> createdBefore = Optional.ofNullable(params.createdBefore())
-//                .map(date -> date.atTime(23, 59, 59));
-
-
         return topicRepository.findByFilters(
                 params.authorId(),
                 params.courseId(),

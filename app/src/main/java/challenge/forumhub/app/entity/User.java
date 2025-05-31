@@ -1,21 +1,20 @@
 package challenge.forumhub.app.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_users")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -41,10 +40,10 @@ public class User {
     private Set<Profile> profiles;
 
     @OneToMany(mappedBy = "author")
-    private Set<Topic> createdTopics;
+    private Set<Topic> createdTopics = new HashSet<>();
 
     @OneToMany(mappedBy = "author")
-    private Set<Reply> replies;
+    private Set<Reply> replies = new HashSet<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

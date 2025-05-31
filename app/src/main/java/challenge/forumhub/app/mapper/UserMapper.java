@@ -27,8 +27,11 @@ public class UserMapper {
     }
 
     public UserDetailsDTO toDetailsDTO(User user){
-        Set<Topic> activeTopics = user.getCreatedTopics().stream().filter(Topic::getActive).collect(Collectors.toSet());
-        Set<Reply> activeReplies = user.getReplies().stream().filter(Reply::getActive).collect(Collectors.toSet());
+        Set<Topic> activeTopics = user.getCreatedTopics() == null ? Set.of()
+                : user.getCreatedTopics().stream().filter(Topic::getActive).collect(Collectors.toSet());
+
+        Set<Reply> activeReplies = user.getReplies() == null ? Set.of()
+                : user.getReplies().stream().filter(Reply::getActive).collect(Collectors.toSet());
 
         Set<String> topicTitles = activeTopics.stream().map(Topic::getTitle).collect(Collectors.toSet());
         Set<String> replyTitles = activeReplies.stream().map(Reply::getTitle).collect(Collectors.toSet());

@@ -1,7 +1,6 @@
 package challenge.forumhub.app.security;
 
 import challenge.forumhub.app.entity.User;
-import challenge.forumhub.app.exception.ResourceNotFoundException;
 import challenge.forumhub.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

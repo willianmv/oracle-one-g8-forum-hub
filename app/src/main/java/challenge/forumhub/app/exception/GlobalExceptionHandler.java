@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +30,12 @@ public class GlobalExceptionHandler {
         List<FieldErrorDTO> fieldErrors = ex.getFieldErrors().stream()
                 .map(err -> new FieldErrorDTO(err.getField(), err.getDefaultMessage())).toList();
         return buildErrorResponse(code.getHttpStatus(), code.getCode(), code.getDefaultMessage(), fieldErrors, request.getRequestURI());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request){
+        var code = ErrorCode.BAD_CREDENTIALS;
+        return buildErrorResponse(code.getHttpStatus(), code.getCode(), ex.getMessage(), null, request.getRequestURI());
     }
 
     @ExceptionHandler(Exception.class)

@@ -16,7 +16,10 @@ public enum ErrorCode {
     VALIDATION_ERROR("VALIDATION_ERROR", HttpStatus.BAD_REQUEST, "Erro de validação nos campos"),
 
     //Relacionado a erros genéricos
-    INTERNAL_ERROR("INTERNAL_ERROR", HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
+    INTERNAL_ERROR("INTERNAL_ERROR", HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor"),
+
+    //Relacionado a erros de autenticação
+    BAD_CREDENTIALS("BAD_CREDENTIALS", HttpStatus.BAD_REQUEST, "Usuário inexistente ou senha inválida");
 
     private final String code;
     private final HttpStatus httpStatus;

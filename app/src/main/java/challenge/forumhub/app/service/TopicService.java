@@ -6,6 +6,7 @@ import challenge.forumhub.app.dto.topic.TopicUpdateDTO;
 import challenge.forumhub.app.entity.Course;
 import challenge.forumhub.app.entity.Topic;
 import challenge.forumhub.app.entity.TopicStatus;
+import challenge.forumhub.app.entity.User;
 import challenge.forumhub.app.exception.ResourceAlreadyExistsException;
 import challenge.forumhub.app.exception.ResourceNotFoundException;
 import challenge.forumhub.app.repository.TopicRepository;
@@ -23,15 +24,17 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final CourseService courseService;
     private final UserRepository userRepository;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public Topic create(TopicRequestDTO dto) {
+        User user = authenticatedUserService.getAuthenticatedUserEntity();
         Course course = validateCourse(dto.courseId());
         validateDuplicateToCreateTopic(dto.title(), dto.message());
         Topic topic = new Topic();
         topic.setTitle(dto.title());
         topic.setMessage(dto.message());
-        topic.setAuthor(userRepository.getReferenceById(3L));
+        topic.setAuthor(user);
         topic.setCourse(course);
         topic.setStatus(TopicStatus.NO_REPLIES);
         return topicRepository.save(topic);
@@ -57,6 +60,9 @@ public class TopicService {
     @Transactional
     public Topic updateTopic(long id, TopicUpdateDTO dto) {
         Topic topicToUpdate = getTopicById(id);
+
+        authenticatedUserService.verifyOwnerOrModeratorOrAdmin(topicToUpdate.getAuthor().getId());
+
         validateDuplicateToUpdateTopic(dto.title(), dto.message(), id);
         Course course = validateCourse(dto.courseId());
         topicToUpdate.setTitle(dto.title());
@@ -68,6 +74,7 @@ public class TopicService {
     @Transactional
     public void deleteTopic(long id) {
         Topic topic = getTopicById(id);
+        authenticatedUserService.verifyOwnerOrModeratorOrAdmin(topic.getAuthor().getId());
         topic.setActive(false);
         topicRepository.save(topic);
     }

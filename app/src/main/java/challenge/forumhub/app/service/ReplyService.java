@@ -5,6 +5,7 @@ import challenge.forumhub.app.dto.reply.ReplyUpdateDTO;
 import challenge.forumhub.app.entity.Reply;
 import challenge.forumhub.app.entity.Topic;
 import challenge.forumhub.app.entity.TopicStatus;
+import challenge.forumhub.app.entity.User;
 import challenge.forumhub.app.exception.ResourceAlreadyExistsException;
 import challenge.forumhub.app.exception.ResourceNotFoundException;
 import challenge.forumhub.app.repository.ReplyRepository;
@@ -25,15 +26,17 @@ public class ReplyService {
     private final TopicService topicService;
     private final UserRepository userRepository;
     private final TopicRepository topicRepository;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public Reply create(ReplyRequestDTO dto) {
         Topic topic = validateTopic(dto.topicId());
+        User user = authenticatedUserService.getAuthenticatedUserEntity();
         validateDuplicateToCreateReply(dto.title(), dto.solution());
         Reply reply = new Reply();
         reply.setTitle(dto.title());
         reply.setSolution(dto.solution());
-        reply.setAuthor(userRepository.getReferenceById(3L));
+        reply.setAuthor(user);
         reply.setTopic(topic);
 
         addReplyToTopic(topic, reply);
@@ -52,6 +55,7 @@ public class ReplyService {
     @Transactional
     public Reply updateReply(long id,ReplyUpdateDTO dto) {
         Reply replyToUpdate = getReplyById(id);
+        authenticatedUserService.verifyOwnerOrModeratorOrAdmin(replyToUpdate.getAuthor().getId());
         validateDuplicateToUpdateReply(dto.title(), dto.solution(), id);
         Topic topic = validateTopic(id);
         replyToUpdate.setTitle(dto.title());
@@ -63,6 +67,7 @@ public class ReplyService {
     @Transactional
     public void deleteReply(long id) {
         Reply reply = getReplyById(id);
+        authenticatedUserService.verifyOwnerOrModeratorOrAdmin(reply.getAuthor().getId());
         reply.setActive(false);
         replyRepository.save(reply);
         verifyActiveRepliesInTopic(reply.getTopic());

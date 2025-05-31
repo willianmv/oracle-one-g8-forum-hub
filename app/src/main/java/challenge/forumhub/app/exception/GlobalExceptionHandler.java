@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(AuthorizationDeniedException ex, HttpServletRequest request){
         var code = ErrorCode.ACCESS_DENIED;
-        return buildErrorResponse(code.getHttpStatus(), code.getCode(), code.getDefaultMessage(), null, request.getRequestURI());
+        return buildErrorResponse(code.getHttpStatus(), code.getCode(), ex.getMessage(), null, request.getRequestURI());
     }
 
     @ExceptionHandler(Exception.class)

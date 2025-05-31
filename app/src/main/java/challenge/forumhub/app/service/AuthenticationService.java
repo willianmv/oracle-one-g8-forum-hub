@@ -60,8 +60,7 @@ public class AuthenticationService {
 
     private Map<String, Object> getExtraClaims(ForumUserDetails userDetails){
         var claims = new HashMap<String, Object>();
-        claims.put("userId", userDetails.getId());
-        claims.put("userEmail", userDetails.getUsername());
+        claims.put("id", userDetails.getId());
         return claims;
     }
 

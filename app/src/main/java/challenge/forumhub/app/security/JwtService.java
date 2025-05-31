@@ -52,12 +52,12 @@ public class JwtService {
 
         return Jwts
                 .builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
                 .issuedAt(now)
                 .expiration(expiration)
-                .claim("authorities", authorities)
+                .subject(userDetails.getUsername())
+                .claims(extraClaims)
                 .signWith(getSignInKey())
+                .claim("authorities", authorities)
                 .compact();
     }
 

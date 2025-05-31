@@ -19,7 +19,8 @@ public enum ErrorCode {
     INTERNAL_ERROR("INTERNAL_ERROR", HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor"),
 
     //Relacionado a erros de autenticação
-    BAD_CREDENTIALS("BAD_CREDENTIALS", HttpStatus.BAD_REQUEST, "Usuário inexistente ou senha inválida");
+    BAD_CREDENTIALS("BAD_CREDENTIALS", HttpStatus.BAD_REQUEST, "Usuário inexistente ou senha inválida"),
+    ACCESS_DENIED("ACCESS_DENIED", HttpStatus.UNAUTHORIZED, "Usuário sem permissão para acessar este recurso");
 
     private final String code;
     private final HttpStatus httpStatus;

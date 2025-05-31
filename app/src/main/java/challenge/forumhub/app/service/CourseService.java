@@ -4,6 +4,7 @@ import challenge.forumhub.app.dto.course.CourseRequestDTO;
 import challenge.forumhub.app.dto.course.CourseUpdateDTO;
 import challenge.forumhub.app.entity.Category;
 import challenge.forumhub.app.entity.Course;
+import challenge.forumhub.app.entity.User;
 import challenge.forumhub.app.exception.RelationValidationException;
 import challenge.forumhub.app.exception.ResourceAlreadyExistsException;
 import challenge.forumhub.app.exception.ResourceNotFoundException;
@@ -25,14 +26,17 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CategoryService categoryService;
     private final UserRepository userRepository;
+    private final AuthenticatedUserService authenticatedUserService;
+
 
     @Transactional
     public Course create(CourseRequestDTO dto) {
+        User user = authenticatedUserService.getAuthenticatedUserEntity();
         validateCourseNameToCreate(dto);
         Set<Category> categories = validateCategories(dto.categoryIds());
         Course course = new Course();
         course.setName(dto.name());
-        course.setCreatedBy(userRepository.getReferenceById(1L));
+        course.setCreatedBy(user);
         course.setCategories(categories);
         return courseRepository.save(course);
     }

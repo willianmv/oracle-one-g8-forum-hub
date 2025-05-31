@@ -21,13 +21,14 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final AuthenticatedUserService authenticatedUserService;
 
     @Transactional
     public Category create(CategoryRequestDTO dto){
+        User user = authenticatedUserService.getAuthenticatedUserEntity();
         validateToCreate(dto.name());
         Category category = new Category();
         category.setName(dto.name());
-        User user = userRepository.getReferenceById(1L);
         category.setCreatedBy(user);
         return categoryRepository.save(category);
     }

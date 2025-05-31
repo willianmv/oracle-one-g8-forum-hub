@@ -10,6 +10,7 @@ import challenge.forumhub.app.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,6 +27,7 @@ public class CourseController {
     private final CourseMapper courseMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CourseDetailsDTO> create(@RequestBody @Valid CourseRequestDTO dto){
         Course createdCourse = courseService.create(dto);
         CourseDetailsDTO responseDTO = courseMapper.toDetailsDTO(createdCourse);
@@ -56,6 +58,7 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CourseDetailsDTO> updateCourse(@PathVariable("courseId") long id,
                                                          @RequestBody @Valid CourseUpdateDTO dto){
         Course updatedCourse = courseService.updateCourse(id, dto);
@@ -63,6 +66,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{courseId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCourse(@PathVariable("courseId") long id){
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();

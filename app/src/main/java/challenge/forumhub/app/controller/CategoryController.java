@@ -10,6 +10,7 @@ import challenge.forumhub.app.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,6 +28,7 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDetailsDTO> create(@RequestBody @Valid CategoryRequestDTO dto){
         Category categorySaved = categoryService.create(dto);
         CategoryDetailsDTO responseDTO = categoryMapper.toDetailsDTO(categorySaved);
@@ -57,6 +59,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDetailsDTO> updateCategory(@PathVariable("categoryId") long id,
                                                              @RequestBody @Valid CategoryUpdateDTO dataToUpdate){;
         Category updatedCategory = categoryService.upadateCategory(id, dataToUpdate);
@@ -64,6 +67,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable("categoryId") long id){
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();

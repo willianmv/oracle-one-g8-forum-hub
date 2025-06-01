@@ -154,3 +154,7 @@ A API está protegida com autenticação baseada em **JWT**. Para testar os endp
 
 > 💡 **Dica:** Se estiver usando perfis com diferentes permissões (`ADMIN`, `MODERATOR`, `MEMBER`), você pode testar os comportamentos específicos de acesso de cada perfil.
 
+---
+## Bagde de Entrega do Desafio
+
+![bagde-desafio-forum-hub](screenshots/forum-hub-challenge.png)

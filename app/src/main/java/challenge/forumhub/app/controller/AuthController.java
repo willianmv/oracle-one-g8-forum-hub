@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.AuthControllerDoc;
 import challenge.forumhub.app.dto.auth.LoginRequestDTO;
 import challenge.forumhub.app.dto.auth.RegisterRequestDTO;
 import challenge.forumhub.app.dto.auth.TokenResponseDTO;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
 
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;

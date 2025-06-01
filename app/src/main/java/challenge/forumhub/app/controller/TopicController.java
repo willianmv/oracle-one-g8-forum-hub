@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.TopicControllerDoc;
 import challenge.forumhub.app.dto.topic.*;
 import challenge.forumhub.app.entity.Topic;
 import challenge.forumhub.app.entity.TopicStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/topics")
 @RequiredArgsConstructor
-public class TopicController {
+public class TopicController implements TopicControllerDoc {
 
     private final TopicService topicService;
     private final TopicMapper topicMapper;
@@ -61,7 +62,7 @@ public class TopicController {
     }
 
     @PutMapping("/{topicId}")
-    public ResponseEntity<TopicDetailsDTO> getTopicById(@PathVariable("topicId") long id,
+    public ResponseEntity<TopicDetailsDTO> updateTopic(@PathVariable("topicId") long id,
                                                         @RequestBody @Valid TopicUpdateDTO dto){
         Topic updatedTopic = topicService.updateTopic(id, dto);
         return ResponseEntity.ok(topicMapper.toDetailsDTO(updatedTopic));

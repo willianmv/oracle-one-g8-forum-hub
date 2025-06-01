@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.CategoryControllerDoc;
 import challenge.forumhub.app.dto.category.CategoryDetailsDTO;
 import challenge.forumhub.app.dto.category.CategoryRequestDTO;
 import challenge.forumhub.app.dto.category.CategorySummaryDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
-public class CategoryController {
+public class CategoryController implements CategoryControllerDoc {
 
     private final CategoryService categoryService;
 

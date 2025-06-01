@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.UserControllerDoc;
 import challenge.forumhub.app.dto.user.UserDetailsDTO;
 import challenge.forumhub.app.dto.user.UserSummaryDTO;
 import challenge.forumhub.app.entity.User;
@@ -18,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserControllerDoc {
 
     private final UserService userService;
     private final UserMapper userMapper;

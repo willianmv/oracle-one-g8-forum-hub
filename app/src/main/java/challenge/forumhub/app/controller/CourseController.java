@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.CourseControllerDoc;
 import challenge.forumhub.app.dto.course.CourseDetailsDTO;
 import challenge.forumhub.app.dto.course.CourseRequestDTO;
 import challenge.forumhub.app.dto.course.CourseSummaryDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/courses")
 @RequiredArgsConstructor
-public class CourseController {
+public class CourseController implements CourseControllerDoc {
 
     private final CourseService courseService;
     private final CourseMapper courseMapper;

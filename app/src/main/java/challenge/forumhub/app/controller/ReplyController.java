@@ -1,5 +1,6 @@
 package challenge.forumhub.app.controller;
 
+import challenge.forumhub.app.controller.doc.ReplyControllerDoc;
 import challenge.forumhub.app.dto.reply.ReplyDetailsDTO;
 import challenge.forumhub.app.dto.reply.ReplyRequestDTO;
 import challenge.forumhub.app.dto.reply.ReplySummaryDTO;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/replies")
 @RequiredArgsConstructor
-public class ReplyController {
+public class ReplyController implements ReplyControllerDoc {
 
     private final ReplyService replyService;
     private final ReplyMapper replyMapper;

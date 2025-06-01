@@ -57,7 +57,7 @@ public class ReplyService {
         Reply replyToUpdate = getReplyById(id);
         authenticatedUserService.verifyOwnerOrModeratorOrAdmin(replyToUpdate.getAuthor().getId());
         validateDuplicateToUpdateReply(dto.title(), dto.solution(), id);
-        Topic topic = validateTopic(id);
+        Topic topic = validateTopic(dto.topicId());
         replyToUpdate.setTitle(dto.title());
         replyToUpdate.setSolution(dto.solution());
         replyToUpdate.setTopic(topic);
